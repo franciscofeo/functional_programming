@@ -1,4 +1,6 @@
-package ch3.ex5
+package ch3.ex5_ex8
+
+import ch3.List.Companion
 
 
 sealed class List<out A> {
@@ -54,8 +56,21 @@ sealed class List<out A> {
                 is Cons -> {
                     if (list.tail is Nil) Nil
                     else Cons(list.head, init(list.tail))
-                    TODO()
                 }
+            }
+
+        // Generalize sum and product methods
+        fun <A, B> foldRight(list: List<A>, default: B, pred: (A, B) -> B): B =
+            when (list) {
+                is Nil -> default
+                is Cons -> pred(list.head, foldRight(list.tail, default, pred))
+            }
+
+        // Exercise 3.8
+        fun <A> length(list: List<A>): Int =
+            when(list){
+                is Nil -> 0
+                is Cons -> foldRight(list, 0) {a, b -> (a as Number).}
             }
 
     }
